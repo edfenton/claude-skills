@@ -1,0 +1,49 @@
+excluded:
+  - Carthage
+  - Pods
+  - .build
+  - DerivedData
+
+opt_in_rules:
+  - empty_count
+  - empty_string
+  - fatal_error_message
+  - first_where
+  - force_unwrapping
+  - implicit_return
+  - implicitly_unwrapped_optional
+  - overridden_super_call
+  - sorted_imports
+
+analyzer_rules:
+  - unused_import
+
+disabled_rules:
+  - trailing_whitespace
+  - todo
+  - opening_brace
+
+line_length:
+  warning: 120
+  error: 160
+
+type_body_length:
+  warning: 300
+  error: 450
+
+file_length:
+  warning: 500
+  error: 800
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - id
+    - ok
+    - x
+    - y
+
+force_cast: error
+force_try: error
+implicitly_unwrapped_optional:
+  severity: error

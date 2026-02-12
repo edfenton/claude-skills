@@ -1,0 +1,112 @@
+name: AppName
+
+options:
+  bundleIdPrefix: com.appname
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+  defaultConfig: NonProd-Debug
+
+configs:
+  NonProd-Debug: debug
+  NonProd-Release: release
+  Prod-Debug: debug
+  Prod-Release: release
+
+configFiles:
+  NonProd-Debug: Config/NonProd.xcconfig
+  NonProd-Release: Config/NonProd.xcconfig
+  Prod-Debug: Config/Prod.xcconfig
+  Prod-Release: Config/Prod.xcconfig
+
+targets:
+  AppName:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/Sources
+    settings:
+      base:
+        SWIFT_VERSION: "6.2"
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+
+  AppNameTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/UnitTests
+    dependencies:
+      - target: AppName
+    settings:
+      base:
+        SWIFT_VERSION: "6.2"
+        GENERATE_INFOPLIST_FILE: true
+        PRODUCT_MODULE_NAME: AppNameTests
+
+  AppNameUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/UITests
+    dependencies:
+      - target: AppName
+    settings:
+      base:
+        SWIFT_VERSION: "6.2"
+        GENERATE_INFOPLIST_FILE: true
+        TEST_TARGET_NAME: AppName
+        PRODUCT_MODULE_NAME: AppNameUITests
+
+schemes:
+  AppName-NonProd:
+    build:
+      targets:
+        AppName: all
+        AppNameTests: [test]
+        AppNameUITests: [test]
+    run:
+      config: NonProd-Debug
+    test:
+      config: NonProd-Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - AppName
+      targets:
+        - name: AppNameTests
+          parallelizable: true
+          randomExecutionOrder: true
+        - name: AppNameUITests
+          parallelizable: false
+    profile:
+      config: NonProd-Release
+    analyze:
+      config: NonProd-Debug
+    archive:
+      config: NonProd-Release
+
+  AppName-Prod:
+    build:
+      targets:
+        AppName: all
+    run:
+      config: Prod-Debug
+    test:
+      config: Prod-Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - AppName
+      targets:
+        - name: AppNameTests
+          parallelizable: true
+          randomExecutionOrder: true
+    profile:
+      config: Prod-Release
+    analyze:
+      config: Prod-Debug
+    archive:
+      config: Prod-Release

@@ -1,0 +1,75 @@
+name: ios-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_test:
+    name: Build & Test
+    runs-on: macos-26
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+
+      - name: show xcode version
+        run: xcodebuild -version
+
+      - name: install tools
+        run: brew install swiftformat swiftlint xcodegen
+
+      - name: generate xcode project
+        run: xcodegen generate
+
+      - name: swiftformat (check)
+        run: |
+          swiftformat --lint .
+
+      - name: swiftlint (strict)
+        run: swiftlint --strict
+
+      - name: build
+        run: |
+          xcodebuild build \
+            -project AppName.xcodeproj \
+            -scheme AppName-NonProd \
+            -destination 'generic/platform=iOS Simulator' \
+            -configuration NonProd-Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILATION_CACHE_ENABLE_CACHING=YES
+
+      - name: find simulator
+        id: simulator
+        run: |
+          DEVICE_ID=$(xcrun simctl list devices available -j | \
+            python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          for runtime in sorted(data['devices'].keys(), reverse=True):
+            if 'iOS' in runtime:
+              for d in data['devices'][runtime]:
+                if 'iPhone' in d['name'] and d['isAvailable']:
+                  print(d['udid']); sys.exit(0)
+          sys.exit(1)")
+          echo "device_id=$DEVICE_ID" >> "$GITHUB_OUTPUT"
+          echo "Selected simulator: $DEVICE_ID"
+
+      - name: unit tests
+        run: |
+          xcodebuild test \
+            -project AppName.xcodeproj \
+            -scheme AppName-NonProd \
+            -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.device_id }}' \
+            -configuration NonProd-Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILATION_CACHE_ENABLE_CACHING=YES \
+            -resultBundlePath TestResults.xcresult

@@ -1,0 +1,4 @@
+#include "Base.xcconfig"
+
+APP_ENVIRONMENT = non-prod
+BUNDLE_ID_SUFFIX = .nonprod

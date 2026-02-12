@@ -1,0 +1,66 @@
+# Ralph Progress Log
+
+Started: {{DATE}}
+Project: {{PROJECT_NAME}}
+
+---
+
+## Codebase Patterns
+
+<!--
+Add reusable patterns here as you discover them.
+Future iterations read this section FIRST.
+
+Examples:
+- API response format: { success: boolean, data?: T, error?: string }
+- Form validation: Use Zod schema with react-hook-form
+- Error handling: Wrap async handlers in try/catch, return standardized error
+- Test patterns: Mocking strategies, test utilities, assertion helpers
+-->
+
+---
+
+## Iterations
+
+<!--
+Append after each completed story using TDD format:
+
+## [Story ID]: [Story Title]
+Timestamp: [current date/time]
+
+### TDD Evidence
+Failing tests before implementation:
+- ✗ "test description" - TestFile.test.tsx
+
+Test run output (red phase):
+FAIL path/to/TestFile.test.tsx
+  ✕ test description (5ms)
+Tests: N failed, 0 passed
+
+### Implemented
+- What was built/changed
+
+### Files
+- path/to/file.test.ts (created - TDD)
+- path/to/file.ts (created)
+
+### Final Test Results
+Tests: X passed, 0 failed
+Coverage: Y% (if available)
+
+### Policy Review
+Security: [concerns addressed / n/a: no security-relevant changes]
+NFR: [concerns addressed / n/a]
+Standards: [confirmed / deviations noted]
+
+### Completion Gates
+Coverage: [X% on new files / not measured]
+Integration test: [path | n/a: no cross-boundary changes]
+Performance: [no concern | benchmark: path]
+
+### Patterns Discovered
+- Any reusable patterns
+
+### Notes for Future Iterations
+- Gotchas, edge cases, context
+-->

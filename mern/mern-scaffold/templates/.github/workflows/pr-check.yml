@@ -1,0 +1,44 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check PR Size
+        uses: codelytv/pr-size-labeler@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: "size/xs"
+          xs_max_size: 10
+          s_label: "size/s"
+          s_max_size: 100
+          m_label: "size/m"
+          m_max_size: 500
+          l_label: "size/l"
+          l_max_size: 1000
+          xl_label: "size/xl"
+          fail_if_xl: false
+          message_if_xl: >
+            This PR is quite large. Consider breaking it into smaller PRs
+            for easier review.
+
+      - name: Check Commits
+        uses: wagoid/commitlint-github-action@v6
+        with:
+          configFile: .commitlintrc.json
+        continue-on-error: true
+
+      - name: Check for WIP
+        run: |
+          if git log --oneline origin/main..HEAD | grep -iE '(fixup|squash|wip|todo)'; then
+            echo "::warning::Found fixup/squash/WIP commits. Please clean up before merging."
+          fi

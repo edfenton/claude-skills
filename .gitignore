@@ -1,0 +1,11 @@
+# Personal skills (not published)
+user/
+
+# Project-specific retrospectives
+**/retro.md
+
+# Claude Code session data
+.claude/
+
+# macOS
+.DS_Store

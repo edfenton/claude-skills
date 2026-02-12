@@ -1,0 +1,7 @@
+DerivedData/
+*.xcodeproj
+*.xcworkspace
+*.xcuserdata
+.build/
+.DS_Store
+TestResults.xcresult

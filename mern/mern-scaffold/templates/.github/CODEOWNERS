@@ -1,0 +1,17 @@
+# Default owners for everything
+* @__GITHUB_USER__
+
+# Security-sensitive files require review
+.github/workflows/ @__GITHUB_USER__
+.github/dependabot.yml @__GITHUB_USER__
+.github/CODEOWNERS @__GITHUB_USER__
+
+# Infrastructure
+docker-compose*.yml @__GITHUB_USER__
+Dockerfile* @__GITHUB_USER__
+
+# API routes require backend review
+apps/web/src/app/api/ @__GITHUB_USER__
+
+# Shared schemas affect multiple consumers
+packages/shared/ @__GITHUB_USER__
