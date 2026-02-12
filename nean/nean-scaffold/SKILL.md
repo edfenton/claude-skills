@@ -27,6 +27,7 @@ Templates provide:
 - Database module with TypeORM config
 - Docker configuration
 - CLAUDE.md for the new repo
+- VS Code workspace settings and extension recommendations
 
 ## What gets created
 
@@ -52,6 +53,9 @@ Templates provide:
 │   ├── Dockerfile.api
 │   ├── Dockerfile.web
 │   └── docker-compose.yml
+├── .vscode/                      # VS Code workspace config (from templates)
+│   ├── settings.json
+│   └── extensions.json
 ├── .github/
 │   ├── workflows/
 │   │   ├── ci.yml                  # CI pipeline
@@ -69,6 +73,7 @@ Templates provide:
 
 ## Scaffold steps
 1. Create Nx workspace from parent dir (creates subdirectory): `npx create-nx-workspace@latest <app-name> --preset=apps --nxCloud=skip --interactive=false --skipGit --packageManager=npm`
+1a. Copy VS Code config from templates: `.vscode/settings.json` and `.vscode/extensions.json`
 2. Install Nx plugins: `npm install -D @nx/nest @nx/angular @nx/js`
 3. Add NestJS: `npx nx g @nx/nest:application apps/api --e2eTestRunner=none`
    > The NestJS generator does NOT create jest config. Add API test infrastructure manually after generation (see step 3a).

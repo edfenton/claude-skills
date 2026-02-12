@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "angular.ng-template",
+    "nrwl.angular-console",
+    "mtxr.sqltools",
+    "orta.vscode-jest"
+  ]
+}

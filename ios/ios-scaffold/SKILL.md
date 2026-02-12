@@ -29,6 +29,7 @@ Templates provide:
 - Scripts (format.sh, lint.sh)
 - Documentation (build-and-run.md, decisions.md)
 - CLAUDE.md for the new repo
+- VS Code workspace settings and extension recommendations
 
 ## What gets created
 
@@ -51,6 +52,9 @@ Templates provide:
 ├── Config/                   # Base.xcconfig, NonProd.xcconfig, Prod.xcconfig
 ├── scripts/                  # format.sh, lint.sh
 ├── .github/workflows/ci.yml
+├── .vscode/                  # VS Code workspace config (from templates)
+│   ├── settings.json
+│   └── extensions.json
 ├── Docs/                     # build-and-run.md, decisions.md, PRD-TEMPLATE.md
 ├── project.yml               # XcodeGen spec (generates .xcodeproj)
 └── CLAUDE.md
