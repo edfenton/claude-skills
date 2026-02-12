@@ -23,7 +23,7 @@ APP_URL=http://localhost:3000           # Base URL for the application
 # =============================================================================
 MONGODB_URI=mongodb://localhost:27017/myapp   # MongoDB connection string
 # For production, use MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/dbname?retryWrites=true&w=majority
+# MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority
 
 # =============================================================================
 # Authentication
