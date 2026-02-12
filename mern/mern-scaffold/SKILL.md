@@ -27,6 +27,7 @@ Templates provide:
 - Server utilities (env validation, response helpers, rate limiting, sanitization)
 - Shared package structure (Zod schemas)
 - CLAUDE.md for the new repo
+- VS Code workspace settings and extension recommendations
 
 ## What gets created
 
@@ -47,6 +48,9 @@ Templates provide:
 │   └── src/
 ├── docs/                     # Documentation
 │   └── PRD-TEMPLATE.md       # Product requirements template for Ralph
+├── .vscode/                  # VS Code workspace config (from templates)
+│   ├── settings.json
+│   └── extensions.json
 ├── .github/                  # GitHub config (from templates)
 │   ├── workflows/
 │   │   ├── ci.yml            # CI pipeline (lint, format, typecheck, test, build, e2e)
@@ -96,6 +100,10 @@ Templates provide:
 - `.prettierignore`
 - `README.md`
 - `CLAUDE.md`
+
+### 2a. Copy VS Code config from templates
+- `.vscode/settings.json`
+- `.vscode/extensions.json`
 
 ### 3. Run create-next-app
 
