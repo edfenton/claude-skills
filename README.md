@@ -95,31 +95,42 @@ These skills automate scaffolding, code review, security audits, testing, deploy
 
 ## Installation
 
-### Install all skills
+Clone the repo, then symlink or copy skills into `~/.claude/skills/` (personal/global) or `.claude/skills/` (project-specific). Symlinks are recommended — they stay in sync when you `git pull` updates.
+
+### Install all skills (symlinks)
 
 ```bash
 git clone https://github.com/edfenton/claude-skills.git
-cp -r claude-skills/ios/* ~/.claude/skills/
-cp -r claude-skills/mern/* ~/.claude/skills/
-cp -r claude-skills/nean/* ~/.claude/skills/
-cp -r claude-skills/shared/* ~/.claude/skills/
+for dir in claude-skills/{ios,mern,nean,shared}/*/; do
+  ln -sf "$(cd "$dir" && pwd)" ~/.claude/skills/"$(basename "$dir")"
+done
 ```
 
 ### Install a single skill
 
 ```bash
-cp -r claude-skills/mern/mern-scaffold ~/.claude/skills/mern-scaffold
+ln -sf "$(cd claude-skills/mern/mern-scaffold && pwd)" ~/.claude/skills/mern-scaffold
 ```
 
 ### Install a category
 
 ```bash
-cp -r claude-skills/mern/* ~/.claude/skills/
+for dir in claude-skills/mern/*/; do
+  ln -sf "$(cd "$dir" && pwd)" ~/.claude/skills/"$(basename "$dir")"
+done
+```
+
+### Copy instead of symlink
+
+If you prefer copies over symlinks (won't auto-update):
+
+```bash
+cp -r claude-skills/mern/mern-scaffold ~/.claude/skills/mern-scaffold
 ```
 
 ### Project-specific installation
 
-Copy skills to `.claude/skills/` in your project root instead of `~/.claude/skills/` for project-scoped usage.
+Symlink or copy skills to `.claude/skills/` in your project root instead of `~/.claude/skills/` for project-scoped usage.
 
 Skills are auto-discovered by Claude Code — no registration step needed.
 
