@@ -70,7 +70,7 @@ These skills automate scaffolding, code review, security audits, testing, deploy
 | `/nean-nfr` | Non-functional requirements checklist |
 | `/nean-sec` | Security policy — OWASP Top 10, CWE Top 25 |
 
-### Shared (18 skills)
+### Shared (19 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -92,6 +92,7 @@ These skills automate scaffolding, code review, security audits, testing, deploy
 | `/shared-review-workflow` | Severity definitions, approval gate protocol, and fix constraints for reviews |
 | `/shared-sec-baseline` | Security output format and core refusal policy shared across platforms |
 | `/shared-tdd` | TDD policy — red-green-refactor workflow and evidence requirements |
+| `/python-scaffold` | Scaffold a Python/FastAPI project with VS Code workspace config |
 
 ## Installation
 
