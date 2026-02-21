@@ -380,10 +380,13 @@ This repository employs:
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".github/dependabot.yml"
+      - "LICENSE"
   workflow_dispatch:
 
 permissions:
@@ -425,6 +428,13 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: apps/web/.next
+          retention-days: 1
+
   e2e:
     runs-on: ubuntu-latest
     needs: lint-test-build
@@ -457,15 +467,30 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter web exec playwright install-deps chromium
 
       # Turbo filters env vars — write .env.local so Next.js sees MONGODB_URI
       - name: Create env file for Next.js
         run: echo "MONGODB_URI=$MONGODB_URI" > apps/web/.env.local
 
-      - name: Build
-        run: pnpm build
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: apps/web/.next
 
       - name: Run E2E tests
         run: pnpm test:e2e
@@ -478,10 +503,13 @@ jobs:
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".github/dependabot.yml"
+      - "LICENSE"
   workflow_dispatch:
 
 permissions:
@@ -564,8 +592,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install Playwright
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps
 
       - name: E2E Tests
         run: npx nx affected --target=e2e --parallel=1
@@ -578,10 +618,13 @@ jobs:
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".github/dependabot.yml"
+      - "LICENSE"
   workflow_dispatch:
 
 permissions:
@@ -593,10 +636,10 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v6
-      
+
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_15.4.app
-      
+
       - name: Build
         run: |
           xcodebuild build \
@@ -604,7 +647,7 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 15' \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO
-      
+
       - name: Test
         run: |
           xcodebuild test \
@@ -623,12 +666,11 @@ jobs:
 name: Security
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   schedule:
     - cron: "0 6 * * 1"
+  workflow_dispatch:
 
 permissions:
   actions: read          # Required for CodeQL v3+ telemetry
